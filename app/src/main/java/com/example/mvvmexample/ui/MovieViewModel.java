@@ -19,9 +19,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MovieViewModel extends ViewModel {
-
-    public MutableLiveData<List<MovieModel>> movieNameMutableLiveData = new MutableLiveData<>();
-    public List<MovieModel> moviesList = new ArrayList<>();
+     MutableLiveData<List<MovieModel>> movieNameMutableLiveData = new MutableLiveData<>();
+     List<MovieModel> moviesList = new ArrayList<>();
 
     public void getMovies() {
         RetrofitHelper.getInstance().getMovies().enqueue(new Callback<String>() {
@@ -48,7 +47,6 @@ public class MovieViewModel extends ViewModel {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 movieNameMutableLiveData.setValue(moviesList);
             }
 
@@ -58,6 +56,4 @@ public class MovieViewModel extends ViewModel {
             }
         });
     }
-
-
 }

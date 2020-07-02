@@ -1,14 +1,14 @@
 package com.example.mvvmexample.ui;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mvvmexample.R;
+import com.example.mvvmexample.databinding.MovieItemBinding;
 import com.example.mvvmexample.model.MovieModel;
 
 import java.util.ArrayList;
@@ -21,13 +21,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @NonNull
     @Override
     public MovieAdapter.MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MovieViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false));
+        MovieItemBinding movieItemBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(parent.getContext()),
+                R.layout.movie_item, parent, false);
+        return new MovieViewHolder(movieItemBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MovieAdapter.MovieViewHolder holder, int position) {
-        holder.movieName.setText(moviesList.get(position).getMovieName());
-        holder.movieYear.setText(moviesList.get(position).getMovieYear());
+          MovieModel movieModel = moviesList.get(position);
+          holder.bind(movieModel);
+//        holder.movieName.setText(moviesList.get(position).getMovieName());
+//        holder.movieYear.setText(moviesList.get(position).getMovieYear());
     }
 
     @Override
@@ -41,13 +46,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {
-        TextView movieName, movieYear;
 
-        public MovieViewHolder(@NonNull View itemView) {
-            super(itemView);
+        // Since our layout file is movie_item.xml, our auto generated binding class is MovieItemBinding
+        private MovieItemBinding itemBinding;
 
-            movieName = itemView.findViewById(R.id.movieName_textView);
-            movieYear = itemView.findViewById(R.id.movieYear_textView);
+        //constructor taking a MovieItemBinding as its parameter
+        public MovieViewHolder(MovieItemBinding itemBinding) {
+            super(itemBinding.getRoot());
+            this.itemBinding = itemBinding;
+        }
+
+        //use this function to bind instance of Movie to the row
+        public void bind(MovieModel movieModel) {
+            itemBinding.setMovie(movieModel);
+            itemBinding.executePendingBindings();
         }
     }
 }

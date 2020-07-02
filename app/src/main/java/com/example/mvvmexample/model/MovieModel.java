@@ -1,10 +1,8 @@
 package com.example.mvvmexample.model;
 
 public class MovieModel {
-    String movieName;
-    String movieYear;
-    int movieImageUrl;
-
+    private String movieName;
+    private String movieYear;
 
     public String getMovieName() {
         return movieName;
@@ -20,13 +18,5 @@ public class MovieModel {
 
     public void setMovieYear(String movieYear) {
         this.movieYear = movieYear;
-    }
-
-    public int getMovieImageUrl() {
-        return movieImageUrl;
-    }
-
-    public void setMovieImageUrl(int movieImageUrl) {
-        this.movieImageUrl = movieImageUrl;
     }
 }

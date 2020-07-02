@@ -28,7 +28,7 @@ public class RetrofitHelper {
     }
 
     public Call<String> getMovies() {
-        return movieInterface.getMovies("8");
+        return movieInterface.getMovies("2160p");
     }
 
 }

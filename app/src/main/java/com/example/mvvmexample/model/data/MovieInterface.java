@@ -7,5 +7,5 @@ import retrofit2.http.Query;
 public interface MovieInterface {
 
     @GET("list_movies.json")
-    Call<String> getMovies(@Query("minimum_rating") String minRating);
+    Call<String> getMovies(@Query("quality") String minRating);
 }
