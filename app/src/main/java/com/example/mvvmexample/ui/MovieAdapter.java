@@ -11,12 +11,15 @@ import com.example.mvvmexample.R;
 import com.example.mvvmexample.databinding.MovieItemBinding;
 import com.example.mvvmexample.model.MovieModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    List<MovieModel> moviesList = new ArrayList<>();
+    private List<MovieModel> moviesList;
+
+    public MovieAdapter(List<MovieModel> moviesList) {
+        this.moviesList = moviesList;
+    }
 
     @NonNull
     @Override
@@ -31,18 +34,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void onBindViewHolder(@NonNull MovieAdapter.MovieViewHolder holder, int position) {
           MovieModel movieModel = moviesList.get(position);
           holder.bind(movieModel);
-//        holder.movieName.setText(moviesList.get(position).getMovieName());
-//        holder.movieYear.setText(moviesList.get(position).getMovieYear());
     }
 
     @Override
     public int getItemCount() {
         return moviesList.size();
-    }
-
-    public void setMoviesList(List<MovieModel> moviesList) {
-        this.moviesList = moviesList;
-        notifyDataSetChanged();
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {
@@ -51,13 +47,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         private MovieItemBinding itemBinding;
 
         //constructor taking a MovieItemBinding as its parameter
-        public MovieViewHolder(MovieItemBinding itemBinding) {
+        private MovieViewHolder(MovieItemBinding itemBinding) {
             super(itemBinding.getRoot());
             this.itemBinding = itemBinding;
         }
 
         //use this function to bind instance of Movie to the row
-        public void bind(MovieModel movieModel) {
+        private void bind(MovieModel movieModel) {
             itemBinding.setMovie(movieModel);
             itemBinding.executePendingBindings();
         }

@@ -13,35 +13,55 @@ import com.example.mvvmexample.R;
 import com.example.mvvmexample.databinding.ActivityMainBinding;
 import com.example.mvvmexample.model.MovieModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     MovieViewModel movieViewModel;
+    List<MovieModel> movieModelList = new ArrayList<>();
+    MovieAdapter movieAdapter;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
 
         //databinding
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         //connect viewModel with main activity
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         movieViewModel.getMovies();
 
-        RecyclerView recyclerView = binding.recycler;
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        final MovieAdapter movieAdapter = new MovieAdapter();
-        recyclerView.setAdapter(movieAdapter);
+        recyclerView = binding.recycler;
 
-        movieViewModel.movieNameMutableLiveData.observe(this, new Observer<List<MovieModel>>() {
-            @Override
-            public void onChanged(List<MovieModel> movieModels) {
-                movieAdapter.setMoviesList(movieModels);
-            }
-        });
+        movieViewModel.movieNameMutableLiveData.observe(this,
+                new Observer<List<MovieModel>>() {
+                    @Override
+                    public void onChanged(List<MovieModel> movieModels) {
+                        movieModelList.addAll(movieModels);
+                        movieAdapter.notifyDataSetChanged();
+                    }
+                });
 
+        setupRecyclerView();
+//        if (movieAdapter == null) {
+//            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//            movieAdapter = new MovieAdapter(movieModelList);
+//            recyclerView.setAdapter(movieAdapter);
+//        } else {
+//            movieAdapter.notifyDataSetChanged();
+//        }
+    }
+
+    private void setupRecyclerView() {
+        if (movieAdapter == null) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            movieAdapter = new MovieAdapter(movieModelList);
+            recyclerView.setAdapter(movieAdapter);
+        } else {
+            movieAdapter.notifyDataSetChanged();
+        }
     }
 }
